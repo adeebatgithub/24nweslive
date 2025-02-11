@@ -1,0 +1,7 @@
+stages:
+  - deploy
+deploy:
+  stage: deploy
+  script: 
+    -   echo "Define your deployment script!"
+    -   if [ "$CI_COMMIT_REF_NAME" = "main" ]; then cp -R /home/gitlab-runner/builds/tWKqrgdM/0/vaisakh_cv/24-hosted-server/* /var/www/test; fi
