@@ -4,6 +4,7 @@
 
 @section('button')
 <a href="{{ route('admin_author_show') }}" class="btn btn-primary"><i class="fas fa-eye"></i> View</a>
+<a href="{{ route('admin_permission_list', $author_data->id) }}" class="btn btn-primary">Permissions</a>
 @endsection
 
 @section('main_content')
@@ -48,6 +49,5 @@
             <button type="submit" class="btn btn-primary">Update</button>
         </div>
     </form>
-    <a href="{{ route('admin_permission_list', $author_data->id) }}" class="btn btn-primary">Permissions</a>
 </div>
 @endsection

@@ -2,6 +2,7 @@
 
 @section('heading', 'Author Permissions')
 
+
 @section('main_content')
 <div class="section-body">
     <div class="row">
@@ -23,7 +24,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->category_name }}</td>
                                     <td class="pt_10 pb_10">
-                                        <a href="{{ route('admin_permission_add',['author_id' => $author_id, 'category_id' => $row->id]) }}" class="btn btn-primary">Add</a>
+                                        <a href="{{ route('admin_permission_add',['author_id'=>$author_id, 'category_id'=>$row->id]) }}" class="btn btn-primary">Add</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -35,7 +36,6 @@
         </div>
     </div>
 </div>
-
 <div class="section-body">
     <div class="row">
         <div class="col-12">
@@ -56,7 +56,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->category->category_name }}</td>
                                     <td class="pt_10 pb_10">
-                                        <a href="{{ route('admin_permission_remove',$row->id) }}" class="btn btn-primary">Remove</a>
+                                        <a href="{{ route('admin_permission_remove',$row->id) }}" class="btn btn-danger">Remove</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -68,4 +68,4 @@
         </div>
     </div>
 </div>
-@endsecrion
+@endsection
