@@ -307,7 +307,9 @@ Route::get('/admin/testimonials/tag/delete/{id}/{id1}', [AdminTestimonialsContro
 
 Route::get('/admin/permission/list/author/{id}', [AuthorCategoryController::class, 'create'])->name('admin_permission_list')->middleware('admin:admin');
 Route::get('/admin/permission/add/author/{author_id}/{category_id}', [AuthorCategoryController::class, 'store'])->name('admin_permission_add')->middleware('admin:admin');
+Route::get('/admin/permission/add/all/author/{id}', [AuthorCategoryController::class, 'addAll'])->name('admin_permission_add_all')->middleware('admin:admin');
 Route::get('/admin/permission/remove/author/{id}', [AuthorCategoryController::class, 'destroy'])->name('admin_permission_remove')->middleware('admin:admin');
+Route::get('/admin/permission/remove/all/author/{id}', [AuthorCategoryController::class, 'removeAll'])->name('admin_permission_remove_all')->middleware('admin:admin');
 
 Route::get('/prayerrequest', [PrayerRequestController::class, 'index'])->name('prayerrequest');
 Route::post('/prayerrequest', [PrayerRequestController::class, 'submit'])->name('prayerrequest_submit');

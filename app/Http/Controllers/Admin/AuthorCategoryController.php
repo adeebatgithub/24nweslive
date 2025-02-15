@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\AuthorCategory;
-use App\Models\Category;
+use App\Models\AuthorCategoryPermission;
+use App\Models\SubCategory;
 
 class AuthorCategoryController extends Controller
 {
@@ -26,8 +26,9 @@ class AuthorCategoryController extends Controller
      */
     public function create($id)
     {
-        $categories = Category::get();
-        $permittedCategories = AuthorCategory::with('category')->where('authors_id', $id)->get();
+        $permittedCategories = AuthorCategoryPermission::with('category')->where('author_id', $id)->get();
+        $excludedCategories = $permittedCategories->pluck('sub_category_id')->toArray();
+        $categories = SubCategory::whereNotIn('id', $excludedCategories)->get();
         $author_id = $id;
         return view('admin.author_category', compact('categories', 'permittedCategories', 'author_id'));
     }
@@ -40,14 +41,12 @@ class AuthorCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        echo "hello store";
-        AuthorCategory::create([
-            'authors_id' => $request->author_id,
-            'categories_id' => $request->category_id
+        AuthorCategoryPermission::create([
+            'author_id' => $request->author_id,
+            'sub_category_id' => $request->category_id
         ]);
 
         return redirect()->route('admin_permission_list', $request->author_id)->with('success', 'Permission Added');
-
     }
 
     /**
@@ -56,9 +55,19 @@ class AuthorCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function addAll($id)
     {
-        //
+        $subCategoryIds = SubCategory::pluck('id')->toArray();
+
+        $data = [];
+        foreach ($subCategoryIds as $subCategoryId) {
+            $data[] = [
+                'author_id' => $id,
+                'sub_category_id' => $subCategoryId,
+            ];
+        }
+        AuthorCategoryPermission::insertOrIgnore($data);
+        return redirect()->back()->with('success', 'All Permissions Added');
     }
 
     /**
@@ -92,7 +101,7 @@ class AuthorCategoryController extends Controller
      */
     public function destroy($id)
     {
-        $authorCategory = AuthorCategory::find($id);
+        $authorCategory = AuthorCategoryPermission::find($id);
 
         if ($authorCategory) {
             $authorCategory->delete();
@@ -100,5 +109,11 @@ class AuthorCategoryController extends Controller
         }
 
         return redirect()->back()->with('error', 'Permission Not Found');
+    }
+
+    public function removeAll($id)
+    {
+        AuthorCategoryPermission::where('author_id', $id)->delete();
+        return redirect()->back()->with('success', 'All Permissions Removed');
     }
 }

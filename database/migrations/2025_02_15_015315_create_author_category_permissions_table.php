@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('author_categories', function (Blueprint $table) {
+        Schema::create('author_category_permissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('authors_id')->constrained()->onDelete('cascade');
-            $table->foreignId('categories_id')->constrained()->onDelete('cascade');
+            $table->foreignId('author_id');
+            $table->foreignId('sub_category_id');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('author_categories');
+        Schema::dropIfExists('author_category_permissions');
     }
 };
